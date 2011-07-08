@@ -2,20 +2,20 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.contrib.auth import logout
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 
 from tweet import PostTweet
+
+consumer_key = ''
+consumer_secret = ''
 
 import twitter
 
 tweet = PostTweet(consumer_key, consumer_secret, access_token_key=None, access_token_secret=None)        
 
-tweet_list = []
-temp_list = []
-tweet_dict = {}
-
 def _process_tweet(tweet_list):
-
+    tweet_dict = {}
     for i in tweet_list:
         if tweet_dict.get(i[1]) is None:
             tweet_dict.update({i[1]:1})
@@ -39,8 +39,11 @@ def tweet_response(request):
         api = tweet._authenticate(request)
     except:
         return HttpResponseRedirect(reverse('home-page'))
-    
-    re_tweets = api.GetUserRetweets()
+
+    tweet_list = []
+    temp_list = []
+
+    re_tweets = api.GetUserRetweets(count=30)
     [tweet_list.append(re.text) for re in re_tweets]
     [temp_list.append((i.split(': ')[-1], i.split(': ')[0].split(' ')[1])) for i in tweet_list]
     love_owner = _process_tweet(temp_list)
@@ -49,3 +52,7 @@ def tweet_response(request):
     context['re_tweets'] = re_tweets
     context['screen_name'] = request.session['screen_name']
     return render_to_response('index.html', context_instance=context)
+
+def twitter_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/')

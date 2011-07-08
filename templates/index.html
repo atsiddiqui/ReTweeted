@@ -5,14 +5,21 @@
 <meta charset="utf-8" />
 <title>Tauquir</title>
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}main.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+<script src="{{MEDIA_URL}}main.js" type="text/javascript"></script>
+<script src="{{MEDIA_URL}}jquery.pajinate.js" type="text/javascript"></script>
 </head>
 
 <body>
 <div id="wrapper">
+  {% if screen_name %}
+  <div class="logout"><a href="{% url twitter-logout %}">logout</a></div>
+  {% endif %}
   <h1 class=""></h1>
   <div id="button-holder"> 
 	<form method="POST" id="searchform"  action="#.">
-        <input type="submit" class="button blue round glass serif" value="My Retweets" />
+        <input type="submit" class="button blue round glass serif" value="Your Retweets" />
+	<img id="loader" class="hide" src="{{ MEDIA_URL }}images/ajax-loader.gif" alt="MailServed" title="Mailserved" />
   </form> </div>
    {% if screen_name %}
    <div class=details>
@@ -21,9 +28,9 @@
 	<p style="clear:both;"></p>
   </div>
   {% endif %}
-  <div id="tweets"> 
+  <div  class="content" id="tweets"> 
 	{% for tw in re_tweets %}
-		{{ tw.text|get_text|urlize }} <strong>By</strong> <span class="owner">{{ tw.text|get_owner }}</span></br><span class="seperator"></span>
+		<div class="tr">{{ tw.text|get_text|urlize }} <strong>By</strong> <span class="owner">{{ tw.text|get_owner }}</span> <strong>On</strong> <span class="owner">{{ tw.created_at }}</span> and Retweeted <span class="owner">{{ tw.retweet_count }}</span> times.</br><span class="seperator"></span></div>
 
         {% endfor %}
   </div>
