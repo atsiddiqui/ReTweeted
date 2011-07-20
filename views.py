@@ -7,8 +7,6 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 
 from tweet import PostTweet
 
-consumer_key = ''
-consumer_secret = ''
 
 import twitter
 
@@ -56,3 +54,7 @@ def tweet_response(request):
 def twitter_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+def test(request):
+    context = RequestContext(request)
+    return render_to_response('index1.html', context_instance=context)
