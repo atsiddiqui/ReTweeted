@@ -62,7 +62,9 @@ html {
 
 #wrapper .logout{
 	float:right;
-	margin-top:10px;:	
+	margin-top:10px;
+	font-size:13px;
+	color:#DD4B39;
 }
 
 #wrapper .add-more {
@@ -83,12 +85,19 @@ html {
 #wrapper #button-holder {
 	display:block;
 }
+
+
 #wrapper #button-holder .button {
 	text-align:center;
 	margin:0 0 0 350px;
 	width:150px;
 	cursor:pointer;
 	border:0;
+}
+
+#wrapper #button-holder #not {
+	margin: 20px 0 0 350px;
+	color:#DD4B39;
 }
 
 #wrapper #button-holder #loader {
@@ -98,7 +107,7 @@ html {
 #tweets {
 	width:890px;
 	margin:30px auto 30px auto;
-	font-size:12px;
+	font-size:13px;
 	font-weight:normal;
 	font-family:'Droid Sans', sans-serif;
 	line-height:20px;
@@ -118,6 +127,22 @@ html {
 	transition: color .25s linear;
 	color:#1a62a3;
 }
+
+#target a {
+	color:#2D76B9;
+	text-decoration:none;
+
+}
+#target a:hover {
+	-webkit-transition: color .25s linear;
+	-moz-transition: color .25s linear;
+	-o-transition: color .25s linear;
+	-ms-transition: color .25s linear;
+	transition: color .25s linear;
+	color:#1a62a3;
+}
+
+
 #tweets span.seperator {
 	background:#f2f2f2;
 	height:1px;
@@ -127,6 +152,11 @@ html {
 #tweets span.owner {
 	color:#4E6D87;
 }
+
+#tweets span.count {
+	color:#DD4B39;
+}
+
 .details {
 	font-family:'Droid Sans', sans-serif;
 

@@ -10,6 +10,9 @@ from tweet import PostTweet
 
 import twitter
 
+consumer_key = ''
+consumer_secret = ''
+
 tweet = PostTweet(consumer_key, consumer_secret, access_token_key=None, access_token_secret=None)        
 
 def _process_tweet(tweet_list):
@@ -40,8 +43,11 @@ def tweet_response(request):
 
     tweet_list = []
     temp_list = []
+    try:
+        re_tweets = api.GetUserRetweets(count=30)
+    except:
+        return render_to_response('index.html', context_instance=context)
 
-    re_tweets = api.GetUserRetweets(count=30)
     [tweet_list.append(re.text) for re in re_tweets]
     [temp_list.append((i.split(': ')[-1], i.split(': ')[0].split(' ')[1])) for i in tweet_list]
     love_owner = _process_tweet(temp_list)
@@ -55,6 +61,3 @@ def twitter_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-def test(request):
-    context = RequestContext(request)
-    return render_to_response('index1.html', context_instance=context)

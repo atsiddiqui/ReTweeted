@@ -8,7 +8,6 @@ request_token_url='https://api.twitter.com/oauth/request_token'
 authorize_url='https://api.twitter.com/oauth/authorize'
 access_token_url='https://api.twitter.com/oauth/access_token'
 
-
 class PostTweet:
 
     def __init__(self, consumer_key, consumer_secret, access_token_key=None, access_token_secret=None):
