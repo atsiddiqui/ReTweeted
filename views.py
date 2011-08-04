@@ -61,3 +61,6 @@ def twitter_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
 
+def test(request):
+    context = RequestContext(request)
+    return render_to_response('index1.html', context_instance=context)
