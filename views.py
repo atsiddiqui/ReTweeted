@@ -1,3 +1,5 @@
+import dbapi
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
@@ -27,6 +29,12 @@ def _process_tweet(tweet_list):
     return max(tweet_dict.iteritems(), key=operator.itemgetter(1))
 
 def home_page(request):
+    user = request.session.get('user')
+    if user:
+        p_obj = dbapi.get_profile(user)
+        if  p_obj is not None:
+            return HttpResponseRedirect(reverse('tweet-response'))
+
     context = RequestContext(request)
     if request.method=='POST':
         auth_url = tweet.get_authorize_url(request)

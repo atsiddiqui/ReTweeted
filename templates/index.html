@@ -3,7 +3,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+{% if screen_name %}
 <title>I retweeted {{ top_tweeted }}'s tweet {{ top_tweeted_count }} times.</title>
+{% else %}
+<title>Just Know Your Retweets!</title>
+{% endif %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}main.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
 <script src="{{MEDIA_URL}}jquery.pajinate.js" type="text/javascript"></script>
@@ -17,11 +21,13 @@
   <div class="logout"><a href="{% url twitter-logout %}">logout</a></div>
   {% endif %}
   <h1 class=""></h1>
+  {% if not screen_name %}
   <div id="button-holder"> 
 	<form method="POST" id="searchform"  action="#.">
         <input type="submit" class="button blue round glass serif" value="Your Retweets" /> 
 	<img id="loader" class="hide" src="{{ MEDIA_URL }}images/ajax-loader.gif" alt="Retweeted" title="Mailserved" /><p id="not">(last #30 Retweets)</p>
   </form> </div>
+   {% endif %}
    {% if screen_name %}
    <div class=details>
      <h2 class="account">Hey {{ screen_name }},</h2>
@@ -38,7 +44,7 @@
 	<div class="distance"></div>
 </div>
 <div class="footer">
-	From the Cool <a href="#.">Folks</a> at <a href="#.">March</a>
+	
 </div>
 </body>
 </html>
