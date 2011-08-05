@@ -10,8 +10,8 @@ from tweet import PostTweet
 
 import twitter
 
-consumer_key = ''
-consumer_secret = ''
+consumer_key = 'tuEnePhT6RKikYqyrxgAQ'
+consumer_secret = '3sL0DTQLg59TiYKIeUN4okvwJGrQARAsy3J9q75YxPE'
 
 tweet = PostTweet(consumer_key, consumer_secret, access_token_key=None, access_token_secret=None)        
 
