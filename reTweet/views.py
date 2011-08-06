@@ -1,17 +1,14 @@
-from django.conf import settings
+
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.contrib.auth import logout
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 
 from tweet import PostTweet
 
 
-import twitter
-
-consumer_key = ''
-consumer_secret = ''
+consumer_key = 'l2AG7Iq0StYpIzxPEYuFEQ'
+consumer_secret = 'FZmFmMofrAYptRfnDwI9dCOV0xWW8Cs4nYSx8ldLBZk'
 
 tweet = PostTweet(consumer_key, consumer_secret, access_token_key=None, access_token_secret=None)        
 
@@ -58,7 +55,7 @@ def tweet_response(request):
     return render_to_response('index.html', context_instance=context)
 
 def twitter_logout(request):
-    logout(request)
+    #logout(request)
     return HttpResponseRedirect('/')
 
 def test(request):

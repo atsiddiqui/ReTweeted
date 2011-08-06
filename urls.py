@@ -3,7 +3,7 @@ import os
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
-from views import home_page, tweet_response, twitter_logout, test
+from reTweet.views import home_page, tweet_response, twitter_logout, test
 
 urlpatterns = patterns('',
     # Example:

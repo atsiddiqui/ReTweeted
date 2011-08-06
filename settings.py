@@ -66,18 +66,20 @@ SECRET_KEY = 'ii9&+q5l^c8ud_098u8cp%$az%87)xpx&ulpb-&_9c%nn)mun_'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
+    'django.template.loaders.app_directories.load_template_source',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
+    'gaesessions.DjangoSessionMiddleware',
     #'django.contrib.sessions.middleware.SessionMiddleware',
     #'django.middleware.csrf.CsrfViewMiddleware',
     #'django.contrib.auth.middleware.AuthenticationMiddleware',
     #'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'ReTweeted.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),
 )
@@ -85,11 +87,11 @@ TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),
 
 INSTALLED_APPS = (
     #'django.contrib.auth',
-    'django.contrib.contenttypes',
+    #'django.contrib.contenttypes',
     #'django.contrib.sessions',
     'django.contrib.sites',
     #'django.contrib.messages',
-    'ReTweeted',
+    'reTweet',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
