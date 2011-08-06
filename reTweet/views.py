@@ -1,4 +1,4 @@
-
+from reTweet.gmodels import User
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -7,8 +7,8 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from tweet import PostTweet
 
 
-consumer_key = 'tuEnePhT6RKikYqyrxgAQ'
-consumer_secret = '3sL0DTQLg59TiYKIeUN4okvwJGrQARAsy3J9q75YxPE'
+consumer_key = ''
+consumer_secret = ''
 
 tweet = PostTweet(consumer_key, consumer_secret, access_token_key=None, access_token_secret=None)        
 
@@ -24,6 +24,7 @@ def _process_tweet(tweet_list):
     return max(tweet_dict.iteritems(), key=operator.itemgetter(1))
 
 def home_page(request):
+
     context = RequestContext(request)
     if request.method=='POST':
         auth_url = tweet.get_authorize_url(request)
@@ -33,8 +34,10 @@ def home_page(request):
 
 def tweet_response(request):
     context = RequestContext(request)
-    api = tweet._authenticate(request)
-    #return HttpResponseRedirect(reverse('home-page'))
+    try:
+        api = tweet._authenticate(request)
+    except:
+        return HttpResponseRedirect(reverse('home-page'))
 
     tweet_list = []
     temp_list = []

@@ -1,6 +1,6 @@
 from reTweet.gmodels import User
 import twitter
-import urlparse
+import cgi
 import oauth2 as oauth
 
 request_token_url='https://api.twitter.com/oauth/request_token'
@@ -18,16 +18,17 @@ class PostTweet:
 
     def _authenticate(self, request):
         user = request.session.get('user', None)
-        if  user is not None:
+        if  user:
             p_obj = User.all().filter('username =', user.username).get()
-            return twitter.Api(consumer_key=self.consumer_key, consumer_secret=self.consumer_secret, \
-                               access_token_key=p_obj.oauth_token, access_token_secret=p_obj.oauth_secret)
+            if p_obj is not None:
+                return twitter.Api(consumer_key=self.consumer_key, consumer_secret=self.consumer_secret, \
+                                       access_token_key=p_obj.oauth_token, access_token_secret=p_obj.oauth_secret)
 
         token = oauth.Token(request.session['request_token']['oauth_token'],
                             request.session['request_token']['oauth_token_secret'])
         client = oauth.Client(self.consumer, token)
         resp, content = client.request(access_token_url, "POST")
-        access_token_key = dict(urlparse.parse_qsl(content))
+        access_token_key = dict(cgi.parse_qsl(content))
         request.session['screen_name'] = access_token_key['screen_name']
         access_token = access_token_key['oauth_token']
         access_token_secret  = access_token_key['oauth_token_secret']
@@ -45,6 +46,6 @@ class PostTweet:
     def get_authorize_url(self, request):
         client=oauth.Client(self.consumer)
         resp, content = client.request(request_token_url, "GET")
-        request_token = dict(urlparse.parse_qsl(content))
-        request.session['request_token'] = dict(urlparse.parse_qsl(content))
+        request_token = dict(cgi.parse_qsl(content))
+        request.session['request_token'] = dict(cgi.parse_qsl(content))
         return '%s?oauth_token=%s' % (authorize_url, request_token['oauth_token'])

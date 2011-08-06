@@ -5,10 +5,7 @@ body {
 	margin:0;
 	padding:0;
 	font-family:'Droid Sans', sans-serif;
-	color:#555;#wrapper .logout{
-	float:right;
-	margin-top:10px;:	
-}
+	color:#555;
 	background:url(images/line.png) repeat;
 	height:100%;
 	}
@@ -60,11 +57,33 @@ html {
 
 }
 
-#wrapper .logout{
+#wrapper .logout a{
 	float:right;
-	margin-top:10px;
+	margin-top:5px;
 	font-size:13px;
 	color:#DD4B39;
+	text-decoration:none;
+}
+
+#wrapper .logout a:hover{
+	float:right;
+	margin-top:5px;
+	font-size:14px;
+	color:#A60000;
+	text-decoration:none;
+}
+
+#wrapper span#tweet {
+	float:right;
+	margin-top:5px;
+	margin-left:15px;
+	margin-right:10px;
+}
+
+#wrapper span#gplus {
+	float:right;
+	margin-top:5px;
+	margin-left:45px;
 }
 
 #wrapper .add-more {
@@ -104,6 +123,11 @@ html {
 	margin:-2px 0 -4px;
 }
 
+#wrapper #button-holder #message {
+	margin:-25px 50px;
+	color:#DD4B39;
+}
+
 #tweets {
 	width:890px;
 	margin:30px auto 30px auto;
@@ -129,7 +153,7 @@ html {
 }
 
 #target a {
-	color:#2D76B9;
+	color:#DD4B39;
 	text-decoration:none;
 
 }
@@ -139,7 +163,7 @@ html {
 	-o-transition: color .25s linear;
 	-ms-transition: color .25s linear;
 	transition: color .25s linear;
-	color:#1a62a3;
+	color:#A60000;
 }
 
 
@@ -150,7 +174,15 @@ html {
 	margin:8px 0;
 }
 #tweets span.owner {
-	color:#4E6D87;
+	color:#DD4B39;
+}
+
+#tweets span.owner a {
+	color:#DD4B39;
+}
+
+#tweets span.owner a:hover {
+	color:#A60000;
 }
 
 #tweets span.count {
@@ -172,7 +204,7 @@ html {
 .details h3 {
 	float:right;
 	display:block;
-	margin:30px 0 0 0;
+	margin:30px -285px 20px 0px;
 	color:#4E6D87;
 	font-size:13px;
 	font-weight:normal;	
@@ -299,8 +331,6 @@ button.button:hover {
 	color: rgba(254,255,255,0.9) !important;
 	text-shadow: rgba(0,0,0,0.2) 0 1px 2px;
 }
-
-
 /* -------------- Fonts -------------- */
 
 .serif { 
@@ -423,9 +453,6 @@ Thanks to David Hund for some help - http://valuedstandards.com/static/test/butt
 	.oval.icon { padding-left: 1.3em; padding-right: 1.3em;	}
 	.knife { padding-left: 2em; }
 }
-
-
-
 
 /* Damn, this became a fat baby..  */
 

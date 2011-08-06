@@ -3,8 +3,10 @@ $(document).ready(function() {
 	//$('#celebs div.tr:odd').css('color', '#666666');
 	$('.button').live('click', function() {
 		$('#loader').addClass('show').removeClass('hide');
+		$('#message').addClass('show').removeClass('hide');
 		$('.button').hide();
 		$('#not').hide();
+		
 	}); 
 });
 
