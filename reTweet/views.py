@@ -7,8 +7,8 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from tweet import PostTweet
 
 
-consumer_key = 'l2AG7Iq0StYpIzxPEYuFEQ'
-consumer_secret = 'FZmFmMofrAYptRfnDwI9dCOV0xWW8Cs4nYSx8ldLBZk'
+consumer_key = ''
+consumer_secret = ''
 
 tweet = PostTweet(consumer_key, consumer_secret, access_token_key=None, access_token_secret=None)        
 
