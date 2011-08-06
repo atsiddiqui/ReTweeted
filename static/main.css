@@ -59,9 +59,31 @@ html {
 
 #wrapper .logout a{
 	float:right;
-	margin-top:10px;
+	margin-top:5px;
 	font-size:13px;
 	color:#DD4B39;
+	text-decoration:none;
+}
+
+#wrapper .logout a:hover{
+	float:right;
+	margin-top:5px;
+	font-size:14px;
+	color:#A60000;
+	text-decoration:none;
+}
+
+#wrapper span#tweet {
+	float:right;
+	margin-top:5px;
+	margin-left:15px;
+	margin-right:10px;
+}
+
+#wrapper span#gplus {
+	float:right;
+	margin-top:5px;
+	margin-left:45px;
 }
 
 #wrapper .add-more {
@@ -126,7 +148,7 @@ html {
 }
 
 #target a {
-	color:#2D76B9;
+	color:#DD4B39;
 	text-decoration:none;
 
 }
@@ -136,7 +158,7 @@ html {
 	-o-transition: color .25s linear;
 	-ms-transition: color .25s linear;
 	transition: color .25s linear;
-	color:#1a62a3;
+	color:#A60000;
 }
 
 
@@ -147,7 +169,15 @@ html {
 	margin:8px 0;
 }
 #tweets span.owner {
-	color:#4E6D87;
+	color:#DD4B39;
+}
+
+#tweets span.owner a {
+	color:#DD4B39;
+}
+
+#tweets span.owner a:hover {
+	color:#A60000;
 }
 
 #tweets span.count {
@@ -169,7 +199,7 @@ html {
 .details h3 {
 	float:right;
 	display:block;
-	margin:30px 0 0 0;
+	margin:30px -285px 20px 0px;
 	color:#4E6D87;
 	font-size:13px;
 	font-weight:normal;	
@@ -296,7 +326,11 @@ button.button:hover {
 	color: rgba(254,255,255,0.9) !important;
 	text-shadow: rgba(0,0,0,0.2) 0 1px 2px;
 }
-
+<div id="button-holder"> 
+	<form method="POST" id="searchform"  action="#.">
+        <input type="submit" class="button blue round glass serif" value="Your Retweets" /> 
+	<img id="loader" class="hide" src="{{ MEDIA_URL }}images/ajax-loader.gif" alt="Retweeted" title="Mailserved" /><p id="not">(last #30 Retweets)</p>
+  </form> </div>
 
 /* -------------- Fonts -------------- */
 
@@ -420,9 +454,6 @@ Thanks to David Hund for some help - http://valuedstandards.com/static/test/butt
 	.oval.icon { padding-left: 1.3em; padding-right: 1.3em;	}
 	.knife { padding-left: 2em; }
 }
-
-
-
 
 /* Damn, this became a fat baby..  */
 

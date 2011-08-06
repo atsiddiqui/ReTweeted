@@ -51,8 +51,11 @@ def tweet_response(request):
 
     tweet_list = []
     temp_list = []
+    
+
     try:
         re_tweets = api.GetUserRetweets(count=30)
+        #follower_list = api.GetFollowers()
     except:
         return render_to_response('index.html', context_instance=context)
 
@@ -62,6 +65,7 @@ def tweet_response(request):
     context['top_tweeted'] = love_owner[0]
     context['top_tweeted_count'] = love_owner[1]
     context['re_tweets'] = re_tweets
+    context['follower_list'] = [follower.id for follower in follower_list]
     context['screen_name'] = request.session['screen_name']
     return render_to_response('index.html', context_instance=context)
 
