@@ -19,7 +19,7 @@ class PostTweet:
     def _authenticate(self, request):
         user = request.session.get('user', None)
         if  user is not None:
-            p_obj = User.all().filter('user_id =', user.user_id).get()
+            p_obj = User.all().filter('username =', user.username).get()
             return twitter.Api(consumer_key=self.consumer_key, consumer_secret=self.consumer_secret, \
                                access_token_key=p_obj.oauth_token, access_token_secret=p_obj.oauth_secret)
 
@@ -34,21 +34,9 @@ class PostTweet:
         user = User.all().filter('user_name = ', access_token_key['screen_name']).get()
         if user is None:
             user = User(username=access_token_key['screen_name'], email='%s@twitter.com' % access_token_key['screen_name'])
-            user.user_id = ''
             user.oauth_token = access_token_key['oauth_token']
             user.oauth_secret = access_token_key['oauth_token_secret']
             user.put()
-#        try:
-#            user = User.objects.get(username=access_token_key['screen_name'])
-#        except User.DoesNotExist:
-#            user = User.objects.create_user(access_token_key['screen_name'],
-#                                            '%s@twitter.com' % access_token_key['screen_name'],
-#                                            access_token_key['oauth_token_secret'])
-#            profile = Profile()
-#            profile.user = user
-#            profile.oauth_token = access_token_key['oauth_token']
-#            profile.oauth_secret = access_token_key['oauth_token_secret']
-#            profile.save()
 
         request.session['user'] = user
         return twitter.Api(consumer_key=self.consumer_key, consumer_secret=self.consumer_secret, \

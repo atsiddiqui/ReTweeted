@@ -2154,7 +2154,7 @@ class Api(object):
                access_token_secret=None,
                input_encoding=None,
                request_headers=None,
-               cache=DEFAULT_CACHE,
+               cache=None,
                shortner=None,
                base_url=None,
                use_gzip_compression=False,
