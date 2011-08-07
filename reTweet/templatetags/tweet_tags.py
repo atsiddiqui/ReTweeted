@@ -23,3 +23,12 @@ def get_count(count, page):
     if page:
         return int(count) + (int(page) - 1)*25
     return
+
+@register.filter
+def get_followers(screen_name, following_list):
+    if following_list:
+        if screen_name in following_list:
+            return False
+        else:
+            return True
+    return

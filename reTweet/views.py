@@ -34,11 +34,6 @@ def home_page(request):
 
 def tweet_response(request):
     context = RequestContext(request)
-    import sys
-    for attr in ('stdin', 'stdout', 'stderr'):
-        setattr(sys, attr, getattr(sys, '__%s__' % attr))
-    import pdb
-    pdb.set_trace()
     try:
         api = tweet._authenticate(request)
     except:
@@ -48,8 +43,10 @@ def tweet_response(request):
     temp_list = []
     try:
         re_tweets = api.GetUserRetweets(count=100)
+        following_list = api.GetFriends()
     except:
         return render_to_response('index.html', context_instance=context)
+
     if len(re_tweets) == 0:
         context['error'] = 'You never retweets.'
         return render_to_response('index.html', context_instance=context)
@@ -60,6 +57,8 @@ def tweet_response(request):
     page = request.GET.get('page')
     if page is not None:
         context['page'] = page
+
+    context['following'] = [following.screen_name for following in following_list] 
     context['top_tweeted'] = love_owner[0]
     context['top_tweeted_count'] = love_owner[1]
     context['re_tweets'] = pagination(request, re_tweets, 25)

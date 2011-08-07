@@ -169,6 +169,31 @@ span.numb {
 
 }
 
+
+span.follow {
+	margin-left:30px;
+}
+
+.follow span.following {
+	color:#30B352;
+	margin-left:0px;
+}
+
+#wrapper .signInButton {
+	background: url(../media/images/twitter-signin.png) no-repeat;
+	border: medium none;
+	height: 24px;
+	width: 151px;
+	margin-top:100px;
+	margin-left:390px;
+	
+}
+
+#wrapper .logo {
+	margin-left:260px;
+	
+}
+
 #target a:hover {
 	-webkit-transition: color .25s linear;
 	-moz-transition: color .25s linear;
