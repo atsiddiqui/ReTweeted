@@ -1,4 +1,6 @@
 from reTweet.gmodels import User
+
+from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -6,9 +8,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 
 from tweet import PostTweet
 
-
-consumer_key = ''
-consumer_secret = ''
+from utils import pagination
 
 tweet = PostTweet(consumer_key, consumer_secret, access_token_key=None, access_token_secret=None)        
 
@@ -34,29 +34,45 @@ def home_page(request):
 
 def tweet_response(request):
     context = RequestContext(request)
+    import sys
+    for attr in ('stdin', 'stdout', 'stderr'):
+        setattr(sys, attr, getattr(sys, '__%s__' % attr))
+    import pdb
+    pdb.set_trace()
     try:
         api = tweet._authenticate(request)
     except:
-        return HttpResponseRedirect(reverse('home-page'))
-
+        return render_to_response('index.html', context_instance=context)
+        
     tweet_list = []
     temp_list = []
     try:
-        re_tweets = api.GetUserRetweets(count=30)
+        re_tweets = api.GetUserRetweets(count=100)
     except:
+        return render_to_response('index.html', context_instance=context)
+    if len(re_tweets) == 0:
+        context['error'] = 'You never retweets.'
         return render_to_response('index.html', context_instance=context)
 
     [tweet_list.append(re.text) for re in re_tweets]
     [temp_list.append((i.split(': ')[-1], i.split(': ')[0].split(' ')[1])) for i in tweet_list]
     love_owner = _process_tweet(temp_list)
+    page = request.GET.get('page')
+    if page is not None:
+        context['page'] = page
     context['top_tweeted'] = love_owner[0]
     context['top_tweeted_count'] = love_owner[1]
-    context['re_tweets'] = re_tweets
+    context['re_tweets'] = pagination(request, re_tweets, 25)
     context['screen_name'] = request.session['screen_name']
     return render_to_response('index.html', context_instance=context)
 
 def twitter_logout(request):
     #logout(request)
+    try:
+        del request.session['user']
+    except:
+        pass
+
     return HttpResponseRedirect('/')
 
 def test(request):

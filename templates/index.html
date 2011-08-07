@@ -8,6 +8,9 @@
 {% else %}
 <title>Just Know Your Retweets!</title>
 {% endif %}
+<meta name="Author" content="ReTweeted.IN | @retweetstats"> 
+<meta name="Description" content="Your retweet's stats"> 
+<meta name="keywords" content="tweet, retweet, reetweetstats, tweetstats, stats"> 
 <link rel="stylesheet" type="text/css" href="/media/main.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
 <script src="/media/main.js" type="text/javascript"></script>
@@ -31,20 +34,20 @@
 
 <body>
 <div id="wrapper">
-  {% if screen_name %}
+  {% if screen_name or error %}
   <div class="logout"><a href="{% url twitter-logout %}">logout</a></div>
-  <span id="tweet"><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.retweeted.in" data-count="horizontal" data-via="TauqueerS">Tweet</a></span>
-  <span id="gplus"><g:plusone size="medium" href="http://retweeted.in"></g:plusone></span>
+  <span id="tweet"><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.retweeted.in" data-count="horizontal" data-via="retweetstats">Tweet</a></span>
+  <span id="gplus"><g:plusone size="medium" href="http://www.retweeted.in"></g:plusone></span>
   {% endif %}
   
-  <h1 class=""></h1>
+  <h1 class="">{{ error }}</h1>
   {% if not screen_name %}
   <div id="button-holder"> 
 	<form method="POST" id="searchform"  action="#.">
         <input type="submit" class="button blue round glass serif" value="Your Retweets" /> 
 	<img id="loader" class="hide" src="/media/images/ajax-loader.gif" alt="Retweeted" title="ReTweeted" />
 	<p id="message" class="hide"> Getting Your ReTweets...</p>	
-	<p id="not">(last #30 Retweets)</p>
+	<p id="not">(last #100 Retweets)</p>
   </form> </div>
    {% endif %}
    {% if screen_name %}
@@ -54,9 +57,33 @@
   </div>
   {% endif %}
   <div  class="content" id="tweets"> 
-	{% for tw in re_tweets %}
-		<div class="tr"><span class="count">#{{ forloop.counter }}. </span>  {{ tw.text|get_text|urlize }} <strong>By</strong> <span class="owner"><a href="http://twitter.com/{{ tw.text|get_owner|clean_name }}" target="blank">{{ tw.text|get_owner }}</a></span> <strong>On</strong> <span class="owner">{{ tw.created_at|get_time }}</span> and Retweeted <span class="owner">{{ tw.retweet_count }}</span> times.</br></div></br><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.retweeted.in" data-text="{{ tw.text }}" data-count="none" data-via="{{ tw.text|get_owner|clean_name }}">Tweet</a><span class="seperator"></span>
+	{% for tw in re_tweets.object_list %}
+		<div class="tr"><span class="count">{% if page %}#{{ forloop.counter|get_count:page }}{% else %}#{{ forloop.counter }}{% endif %}. </span>  {{ tw.text|get_text|urlize }} <strong>By</strong> <span class="owner"><a href="http://twitter.com/{{ tw.text|get_owner|clean_name }}" target="blank">{{ tw.text|get_owner }}</a></span> <strong>On</strong> <span class="owner">{{ tw.created_at|get_time }}</span> and Retweeted <span class="owner">{{ tw.retweet_count }}</span> times.</br></div></br><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.retweeted.in" data-text="{{ tw.text }}" data-count="none" data-via="{{ tw.text|get_owner|clean_name }}">Tweet</a><span class="seperator"></span>
 
+        {% endfor %}
+{% if screen_name %}
+<span class="step-links">
+        	{% if re_tweets.has_previous %}
+        	    <a style="text-decoration:none" href="?page={{ re_tweets.previous_page_number }}"><span class="next">Pre</span></a>
+        	{% endif %}
+
+        	<span class="current">
+        	    Page <span class="numb">{{ re_tweets.number }}</span> of <span class="numb">{{ re_tweets.paginator.num_pages }}</span> 
+        	</span>
+	
+        	{% if re_tweets.has_next %}
+        	    <a style="text-decoration:none" href="?page={{ re_tweets.next_page_number }}"><span class="next">Next</span></a>
+        	{% endif %}
+	</span>
+{% endif %}
+  </div>
+	<div class="distance"></div>
+</div>
+
+
+<div class="footer">
+	
+</div>
 <script type="text/javascript">
   (function() {
     var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
@@ -64,14 +91,5 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
   })();
 </script>
-
-        {% endfor %}
-  </div>
-	<div class="distance"></div>
-</div>
-
-<div class="footer">
-	
-</div>
 </body>
 </html>

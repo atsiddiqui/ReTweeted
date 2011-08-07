@@ -139,7 +139,7 @@ html {
 	
 	}
 #tweets a {
-	color:#2D76B9;
+	color:#DD4B39;
 	text-decoration:none;
 
 }
@@ -149,7 +149,7 @@ html {
 	-o-transition: color .25s linear;
 	-ms-transition: color .25s linear;
 	transition: color .25s linear;
-	color:#1a62a3;
+	color:#A60000;
 }
 
 #target a {
@@ -157,6 +157,18 @@ html {
 	text-decoration:none;
 
 }
+span.next {
+	color:#DD4B39;
+	text-decoration:none;
+
+}
+
+span.numb {
+	color:#DD4B39;
+	text-decoration:none;
+
+}
+
 #target a:hover {
 	-webkit-transition: color .25s linear;
 	-moz-transition: color .25s linear;
@@ -205,7 +217,7 @@ html {
 	float:right;
 	display:block;
 	margin:30px -285px 20px 0px;
-	color:#4E6D87;
+	color:#DD4B39;
 	font-size:13px;
 	font-weight:normal;	
 }

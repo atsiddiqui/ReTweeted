@@ -32,7 +32,7 @@ class PostTweet:
         request.session['screen_name'] = access_token_key['screen_name']
         access_token = access_token_key['oauth_token']
         access_token_secret  = access_token_key['oauth_token_secret']
-        user = User.all().filter('user_name = ', access_token_key['screen_name']).get()
+        user = User.all().filter('username = ', access_token_key['screen_name']).get()
         if user is None:
             user = User(username=access_token_key['screen_name'], email='%s@twitter.com' % access_token_key['screen_name'])
             user.oauth_token = access_token_key['oauth_token']

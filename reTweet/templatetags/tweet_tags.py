@@ -17,3 +17,9 @@ def get_time(string):
 @register.filter
 def clean_name(string):
     return string[1:]
+
+@register.filter
+def get_count(count, page):
+    if page:
+        return int(count) + (int(page) - 1)*25
+    return
