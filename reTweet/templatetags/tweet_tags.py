@@ -1,3 +1,4 @@
+import time
 from django.template import Library
 
 register = Library()
@@ -8,11 +9,19 @@ def get_owner(string):
 
 @register.filter
 def get_text(string):
-    return string.split(': ')[-1]
+    temp = string.split(': ')
+    if len(temp) > 0:
+        temp.pop(0)
+        string = ': '.join(temp)
+    return string
 
 @register.filter
 def get_time(string):
-    return ' '.join(string.split(' ')[:3])
+    try:
+        time_struct = time.strptime(string, "%a %b %d %H:%M:%S +0000 %Y")
+        return '%s/%s/%s' %(time_struct.tm_mday, time_struct.tm_mon, time_struct.tm_year)
+    except:
+        return ' '.join(string.split(' ')[:3])
 
 @register.filter
 def clean_name(string):

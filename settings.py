@@ -1,11 +1,12 @@
 # Django settings for getretweet project.
 import os
-#DEBUG = False
-DEBUG = True
+DEBUG = False
+#DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+    ('ali tauquir siddiqui', 'ali@retweeted.in'),
+    ('shwetanka srivastava', 'admin@retweeted.in'),
 )
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))

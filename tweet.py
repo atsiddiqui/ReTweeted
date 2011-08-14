@@ -17,7 +17,9 @@ class PostTweet:
         self.consumer=oauth.Consumer(consumer_key, consumer_secret)
 
     def _authenticate(self, request):
+        import logging
         user = request.session.get('user', None)
+        logging.info(user)
         if  user:
             p_obj = User.all().filter('username =', user.username).get()
             if p_obj is not None:
@@ -38,7 +40,7 @@ class PostTweet:
             user.oauth_token = access_token_key['oauth_token']
             user.oauth_secret = access_token_key['oauth_token_secret']
             user.put()
-
+            
         request.session['user'] = user
         return twitter.Api(consumer_key=self.consumer_key, consumer_secret=self.consumer_secret, \
                                access_token_key=access_token, access_token_secret=access_token_secret)

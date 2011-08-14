@@ -1,5 +1,7 @@
+import logging
 from reTweet.gmodels import User
-
+from google.appengine.api import memcache
+from django.utils import simplejson
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
@@ -7,7 +9,7 @@ from django.template.context import RequestContext
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 
 from tweet import PostTweet
-
+from twitter import Status
 from utils import pagination
 
 tweet = PostTweet(consumer_key, consumer_secret, access_token_key=None, access_token_secret=None)        
@@ -34,6 +36,7 @@ def home_page(request):
 
 def tweet_response(request):
     context = RequestContext(request)
+
     try:
         api = tweet._authenticate(request)
     except:
@@ -42,8 +45,24 @@ def tweet_response(request):
     tweet_list = []
     temp_list = []
     try:
-        re_tweets = api.GetUserRetweets(count=100)
-        following_list = api.GetFriends()
+        re_tweets = memcache.get("retweetsby")
+        logging.info(re_tweets)
+        if re_tweets is None:
+            first_set_tweets = api.GetUserRetweets(count=100)
+            if len(first_set_tweets) > 0 and len(first_set_tweets) > 100:
+                last_retweet_id = first_set_tweets[-1].id
+                next_set_retweets = api.GetUserRetweets(count=30, max_id = last_retweet_id)
+                re_tweets = first_set_tweets + next_set_retweets
+            else:
+                re_tweets = first_set_tweets
+            memcache.add("retweetsby", re_tweets, 10)
+            logging.error("Memcache set failed.")
+
+        following_list = memcache.get("following")
+        if following_list is None:
+            following_list = api.GetFriends()
+            memcache.add("following", re_tweets, 10)
+
     except:
         return render_to_response('index.html', context_instance=context)
 
@@ -57,13 +76,64 @@ def tweet_response(request):
     page = request.GET.get('page')
     if page is not None:
         context['page'] = page
-
-    context['following'] = [following.screen_name for following in following_list] 
+ 
+    context['following'] = [str(following.screen_name) for following in following_list] 
     context['top_tweeted'] = love_owner[0]
     context['top_tweeted_count'] = love_owner[1]
     context['re_tweets'] = pagination(request, re_tweets, 25)
     context['screen_name'] = request.session['screen_name']
+    
     return render_to_response('index.html', context_instance=context)
+
+def retweeted_of_user(request, count=100):
+    context = RequestContext(request)
+    try:
+        api = tweet._authenticate(request)
+        parameters = {}
+        parameters['count'] = count
+        json = api._FetchUrl('http://api.twitter.com/1/statuses/retweets_of_me.json?include_entities=true', \
+                                 parameters = parameters)
+        data = api._ParseAndCheckTwitter(json)
+        re_tweets = [Status.NewFromJsonDict(x) for x in data]
+
+        following_list = memcache.get("following")
+        if following_list is None:
+            following_list = api.GetFriends()
+            memcache.add("following", re_tweets, 10)
+
+    except:
+        return render_to_response('index.html', context_instance=context)
+
+    page = request.GET.get('page')
+    if page is not None:
+        context['page'] = page
+
+    context['following'] = [str(following.screen_name) for following in following_list]
+    context['re_tweets'] = pagination(request, re_tweets, 25)
+    context['screen_name'] = request.session['screen_name']
+    return render_to_response('retweeted-by.html', context_instance=context)
+
+def friend_unfollow(request):
+    if request.is_ajax():
+        if request.method == "POST":
+            screen_name = request.POST.get('screen_name')
+            try:
+                api = tweet._authenticate(request)
+                api.DestroyFriendship(screen_name)
+            except:
+                return HttpResponse(simplejson.dumps({'success': 'false'}), mimetype='application/json')
+        return HttpResponse(simplejson.dumps({'success': 'true'}), mimetype='application/json')
+
+def friend_follow(request):
+    if request.is_ajax():
+        if request.method == "POST":
+            screen_name = request.POST.get('screen_name')
+            try:
+                api = tweet._authenticate(request)
+                api.CreateFriendship(screen_name)
+            except:
+                return HttpResponse(simplejson.dumps({'success': 'false'}), mimetype='application/json')
+        return HttpResponse(simplejson.dumps({'success': 'true'}), mimetype='application/json')
 
 def twitter_logout(request):
     #logout(request)

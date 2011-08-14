@@ -13,8 +13,67 @@ html {
  	height:100%;	
 
 }
+
+#topnav {
+	width:100%;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.496094) 0px 1px 2px;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#333), to(#111));
+	margin-top:-20px;
+	height:40px;
+	color:white;
+	padding-left: 85px;
+}
+
+#topnav {
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    background: -moz-linear-gradient(center top , #333333, #111111) repeat scroll 0 0 transparent;
+    height: 40px;
+    margin-top:-10px;
+    color:white;
+    width: 100%;
+    padding-left:85px;
+}
+#topnav .retweet-by-me {
+	padding-left:700px;
+	color: #BABABA;
+	position:relative;
+	line-height:40px;
+	font-size:14px;
+
+}
+#topnav a:hover{
+	text-shadow: rgba(0, 0, 0, 0.296875) 0px -1px 0px;
+	border-top:2px;
+	border-top-color: #DD4B39 !important;
+}
+
+#topnav .retweet-of-me{
+	padding-left:10px;
+	color: #BABABA;
+	position:relative;
+	line-height:40px;
+	font-size:14px;
+}
+
+#topnav .retweet-by-user{
+	padding-left:10px;
+	color: #BABABA;
+	position:relative;
+	line-height:40px;
+	font-size:14px;
+}
+
+#topnav .signout{
+	padding-left:10px;
+	color: #BABABA;
+	position:relative;
+	line-height:40px;
+	font-size:14px;
+}
+
+
 #wrapper {
-	width:900px;
+	width:1000px;
 	margin:50px auto 80px auto;
 	background:#FFF;
 	box-shadow:0 0 8px 0 #80C4FF;
@@ -57,6 +116,25 @@ html {
 
 }
 
+#wrapper .leftnav{
+	float:left;
+	margin-top:30px auto;
+	width:100px;	
+}
+
+.tweet-text {
+	float:left;
+	margin-left:-100px;
+	margin-top:62px;
+	width:100px;
+}
+
+.tweet-message {
+float: left;
+margin-left: -200px;
+margin-top: 82px;
+width: 100px;
+}
 #wrapper .logout a{
 	float:right;
 	margin-top:5px;
@@ -91,6 +169,13 @@ html {
 	margin-bottom:10px;
 	/*background:url(images/add-more.jpg) no-repeat;	*/
 }
+
+#wrapper .error-page {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 
 .hide {
 	display:none;
@@ -129,13 +214,15 @@ html {
 }
 
 #tweets {
-	width:890px;
-	margin:30px auto 30px auto;
+	width:990px;
+	margin-top:150px;
+	margin-left:30px;
 	font-size:13px;
 	font-weight:normal;
 	font-family:'Droid Sans', sans-serif;
-	line-height:20px;
+	line-height:30px;
 	text-align:left;
+	padding:0px;
 	
 	}
 #tweets a {
@@ -159,7 +246,7 @@ html {
 }
 span.next {
 	color:#DD4B39;
-	text-decoration:none;
+	text-decoration:none;http://api.twitter.com/1/friendships/show.format
 
 }
 
@@ -172,11 +259,57 @@ span.numb {
 
 span.follow {
 	margin-left:30px;
+	padding:7px;
+}
+
+.by {
+	color:#099;
+	margin-left:21px;
+}
+
+.on {
+	color:#099;
+	margin-left:7px;
+	padding-left:5px;
+}
+
+.retweeted {
+	color:#099;
+	margin-left:7px;
+	padding-left:5px;
+}
+
+.retweeted a:hover {
+	color:#099;
+	margin-left:7px;
+	padding-left:5px;
+	text-decoration:underline;
 }
 
 .follow span.following {
 	color:#30B352;
-	margin-left:0px;
+	margin-left:-12px;
+}
+
+#unfollow_load {
+	float:right;
+	margin-right:5px;
+}
+
+#follow_load {
+	float:right;
+	margin-right:5px;
+}
+
+.greencolor {
+	color:#099;
+}
+
+
+span.twitter_icon{
+	padding-right:20px;
+	background:transparent url(images/twitter.png) no-repeat center right;
+	cursor:pointer;
 }
 
 #wrapper .signInButton {
@@ -205,10 +338,10 @@ span.follow {
 
 
 #tweets span.seperator {
-	background:#f2f2f2;
+	background:#80C4FF;
 	height:1px;
 	display:block;
-	margin:8px 0;
+	margin:10px 0;
 }
 #tweets span.owner {
 	color:#DD4B39;
@@ -232,10 +365,19 @@ span.follow {
 }	
 .details h2.account {
 	font-size:16px;
-	color:#555;
+	color:#099;
 	font-weight:normal;	
 	display:inline-block;
-	margin:30px 0 0 0;
+	margin:90px 10px 10px -100px;
+	float:left;
+}
+
+.details h2.screen {
+	font-size:16px;
+	color:#099;
+	font-weight:normal;	
+	display:inline-block;
+	margin:110px 10px 10px -100px;
 	float:left;
 }	
 .details h3 {
@@ -509,4 +651,114 @@ Thanks to David Hund for some help - http://valuedstandards.com/static/test/butt
 .distance {
 	clear:both;
 	height:30px;
+}
+
+
+/* Light box implementation */
+
+#lightbox {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 400px;
+	margin-left: -250px;
+	background: #fff;
+	z-index: 1001;
+	display: none;
+	height:auto; 
+	margin-top:3px;
+}
+
+#lightbox-shadow {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	filter: alpha(opacity=75);
+	-moz-opacity: 0.75;
+	-khtml-opacity: 0.75;
+	opacity: 0.75;
+	z-index: 1000;
+	display: none;
+}
+
+/* Facebox */
+
+.friends_area{
+    width:380px;
+    padding:10px;
+    height:50px;
+    border-bottom: #999999 solid 1px;
+    }
+
+.friends_area .loading {
+	font-size:13px;
+	font-weight:normal;
+	font-family:'Droid Sans', sans-serif;
+	text-align:left;
+	color:#DD4B39;
+	font-size:13px;
+}
+
+.top_area{
+	margin-right: 5px;
+	float:left;
+	font-size:14px;
+	color:#DD4B39;
+	font-weight:bold;
+	padding:10px 6px 6px 12px;
+}
+
+.close-icon{
+	margin-right:12px;
+	margin-top:5px;
+}
+.name{
+	font-size:13px;
+	color:#30B352;
+	padding:8px;
+	}
+
+.follow-box {
+	color:#DD4B39;
+	float:right;
+	margin-right:10px;
+	margin-top:8px;
+	display:block;
+	font-size:12px;	
+}
+
+.follow-box-self {
+	color:#30B352;
+	float:right;
+	margin-right:10px;
+	margin-top:8px;
+	display:block;
+	font-size:12px;	
+}
+
+.follow-box-unfollow {
+	color:#9AC9FF;
+	float:right;
+	margin-right:10px;
+	margin-top:8px;
+	display:block;	
+	font-size:12px;
+}
+
+#search_area{
+	background:#F2F2F2 none repeat scroll 0 0;
+	width:390px;
+	padding:5px;
+	height:30px;
+}
+
+.hide {
+	display:none; !important
+}
+
+.show {
+	display:block; !important
 }

@@ -3,11 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-{% if screen_name %}
-<title>I retweeted {{ top_tweeted }}'s tweet {{ top_tweeted_count }} times.</title>
-{% else %}
-<title>Just know your retweets and stats related to your retweets. </title>
-{% endif %}</br></div>
+<title>Your tweet's retweets status. </title>
 <meta name="Author" content="ReTweeted.IN | @retweetstats"> 
 <meta name="Description" content="Retweeted shows more than 100 of your retweet's and stats with detail description"> 
 <meta name="keywords" content="tweet, retweet, retweetstats, tweetstats, stats"> 
@@ -33,29 +29,19 @@
   <span id="gplus"><g:plusone size="medium" href="http://www.retweeted.in"></g:plusone></span>
   {% endif %}
   
-  <h1 class="">{{ error }}</h1>
-  {% if not screen_name %}
-  <div id="button-holder"> 
-	<form method="POST" id="searchform"  action="#.">
-	<img class="logo" src="/media/images/logo.jpg" alt="Retweeted" title="ReTweeted" />
-        <input type="submit" class="signInButton"  value=""/> 
-	<img id="loader" class="hide" src="/media/images/ajax-loader.gif" alt="Retweeted" title="ReTweeted" />
-	<p id="message" class="hide"> Getting Your ReTweets...</p>	
-	<p id="not">(Get Your Last #200 Retweets)</p>
-  </form> </div>
-   {% endif %}
+
    {% if screen_name %}
    <div class=details>
-     <h2 class="account">Hey {{ screen_name }}, </h2> <span class="tweet-text"><h3><strong>You have retweeted <span id="target"><a href="http://twitter.com/{{ top_tweeted|clean_name }}" target="blank">{{ top_tweeted }}'s</a></span> tweet</strong> {{ top_tweeted_count }}<span> times.</span></h3><p style="clear:both;"></p></span>
+     <h2 class="screen">Hey {{ screen_name }}, </h2> <span class="tweet-message"><h3><strong>Your tweet's retweets stats.</span></h3><p style="clear:both;"></p></span>
   </div>
   {% endif %}
   <div  class="content" id="tweets"> 
 	{% for tw in re_tweets.object_list %}
-		<div class="tr"><span class="count">{% if page %}#{{ forloop.counter|get_count:page }}{% else %}#{{ forloop.counter }}{% endif %}. </span>  {{ tw.retweeted_status.text|urlize }}.</br></div>
+		<div class="tr"><span class="count">{% if page %}#{{ forloop.counter|get_count:page }}{% else %}#{{ forloop.counter }}{% endif %}. </span>  {{ tw.text|urlize }}.</br></div>
 
- <strong><span class="by">By</strong></span> <span class="owner"><a href="http://twitter.com/{{ tw.retweeted_status.user.screen_name }}/">{{ tw.retweeted_status.user.screen_name }}</a></span> <strong><span class="on">On</span></strong> <span class="owner"><a href="http://twitter.com/{{ tw.retweeted_status.user.screen_name }}/status/{{ tw.retweeted_status.id }}/" target="blank">{{ tw.created_at|get_time }}</a></span>
+<strong><span class="on">On</span></strong> <span class="owner"><a href="http://twitter.com/{{ tw.user.screen_name }}/status/{{ tw.id }}/" target="blank">{{ tw.created_at|get_time }}</a></span>
 
-<a href="javascript:lightbox('{{  screen_name }}', '{{ tw.retweeted_status.user.screen_name }}', 'http://api.twitter.com/1/statuses/{{ tw.retweeted_status.id }}/retweeted_by.json?callback=?');"><span class="owner twitter_icon"><span class="retweeted">Retweeted</span> {{ tw.retweet_count }}</span></a><span class="follow">{% if tw.retweeted_status.user.screen_name|get_followers:following %}<a href="http://twitter.com/{{ tw.retweeted_status.user.screen_name }}" class="twitter-follow-button" data-show-count="false" data-link-color="#DD4B39">Follow @{{ tw.retweeted_status.user.screen_name }}</a>{% else %}<span class="following"><span class="greencolor">Following</span></span>{% endif %}</span></script><span class="seperator"></span>
+<a href="javascript:lightbox('{{  screen_name }}', '{{ tw.user.screen_name }}', 'http://api.twitter.com/1/statuses/{{ tw.id }}/retweeted_by.json?callback=?');"><span class="owner twitter_icon"><span class="retweeted">Retweeted</span> {{ tw.retweet_count }}</span></a><span class="seperator"></span>
 
         {% endfor %}
 
