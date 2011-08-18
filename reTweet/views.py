@@ -12,6 +12,7 @@ from tweet import PostTweet
 from twitter import Status
 from utils import pagination
 
+
 tweet = PostTweet(consumer_key, consumer_secret, access_token_key=None, access_token_secret=None)        
 
 def _process_tweet(tweet_list):
@@ -29,18 +30,24 @@ def home_page(request):
 
     context = RequestContext(request)
     if request.method=='POST':
+        request.session['followme'] = request.POST.get('follow-me')
         auth_url = tweet.get_authorize_url(request)
         return HttpResponseRedirect(auth_url)
 
-    return render_to_response('index.html', context_instance=context)
+    return render_to_response('home.html', context_instance=context)
 
 def tweet_response(request):
     context = RequestContext(request)
 
     try:
         api = tweet._authenticate(request)
+        follow_me = request.session.get('followme', None)
+        user = request.session.get('user', None)
+                    
+        if follow_me is not None and user is not None:
+            api.CreateFriendship('retweetstats')
     except:
-        return render_to_response('index.html', context_instance=context)
+        return render_to_response('home.html', context_instance=context)
         
     tweet_list = []
     temp_list = []
@@ -64,7 +71,7 @@ def tweet_response(request):
             memcache.add("following", re_tweets, 10)
 
     except:
-        return render_to_response('index.html', context_instance=context)
+        return render_to_response('home.html', context_instance=context)
 
     if len(re_tweets) == 0:
         context['error'] = 'You never retweets.'

@@ -41,7 +41,6 @@
         <input type="submit" class="signInButton"  value=""/> 
 	<img id="loader" class="hide" src="/media/images/ajax-loader.gif" alt="Retweeted" title="ReTweeted" />
 	<p id="message" class="hide"> Getting Your ReTweets...</p>	
-	<p id="not">(Get Your Last #200 Retweets)</p>
   </form> </div>
    {% endif %}
    {% if screen_name %}
@@ -55,7 +54,7 @@
 
  <strong><span class="by">By</strong></span> <span class="owner"><a href="http://twitter.com/{{ tw.retweeted_status.user.screen_name }}/">{{ tw.retweeted_status.user.screen_name }}</a></span> <strong><span class="on">On</span></strong> <span class="owner"><a href="http://twitter.com/{{ tw.retweeted_status.user.screen_name }}/status/{{ tw.retweeted_status.id }}/" target="blank">{{ tw.created_at|get_time }}</a></span>
 
-<a href="javascript:lightbox('{{  screen_name }}', '{{ tw.retweeted_status.user.screen_name }}', 'http://api.twitter.com/1/statuses/{{ tw.retweeted_status.id }}/retweeted_by.json?callback=?');"><span class="owner twitter_icon"><span class="retweeted">Retweeted</span> {{ tw.retweet_count }}</span></a><span class="follow">{% if tw.retweeted_status.user.screen_name|get_followers:following %}<a href="http://twitter.com/{{ tw.retweeted_status.user.screen_name }}" class="twitter-follow-button" data-show-count="false" data-link-color="#DD4B39">Follow @{{ tw.retweeted_status.user.screen_name }}</a>{% else %}<span class="following"><span class="greencolor">Following</span></span>{% endif %}</span></script><span class="seperator"></span>
+<a href="javascript:lightbox('{{  screen_name }}', '{{ tw.retweeted_status.user.screen_name }}', 'http://api.twitter.com/1/statuses/{{ tw.retweeted_status.id }}/retweeted_by.json?callback=?&count=100');"><span class="owner twitter_icon"><span class="retweeted">Retweeted</span> {{ tw.retweet_count }}</span></a><span class="follow">{% if tw.retweeted_status.user.screen_name|get_followers:following %}<span id="twitter-follow"><a href="http://twitter.com/{{ tw.retweeted_status.user.screen_name }}" class="twitter-follow-button" data-show-count="false" data-link-color="#DD4B39">Follow @{{ tw.retweeted_status.user.screen_name }}</a></span>{% else %}<span class="following"><span class="greencolor">Following</span></span>{% endif %}</span></script><span class="seperator"></span>
 
         {% endfor %}
 
