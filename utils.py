@@ -13,3 +13,9 @@ def pagination(request, tweets, result_per_page):
         tweets = paginator.page(paginator.num_pages)
 
     return tweets
+
+def non_followers(followers_list, following_list):
+    x = []
+    [x.append(i) for i in following_list if i.AsDict().get('screen_name') \
+         not in [j.AsDict().get('screen_name') for j in followers_list]]
+    return x

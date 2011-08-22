@@ -4,7 +4,7 @@ import cgi
 import oauth2 as oauth
 
 request_token_url='https://api.twitter.com/oauth/request_token'
-authorize_url='https://api.twitter.com/oauth/authorize'
+authorize_url='https://api.twitter.com/oauth/authenticate'
 access_token_url='https://api.twitter.com/oauth/access_token'
 
 class PostTweet:

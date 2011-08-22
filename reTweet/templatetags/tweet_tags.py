@@ -41,3 +41,13 @@ def get_followers(screen_name, following_list):
         else:
             return True
     return
+
+@register.filter
+def get_following_count(following_list):
+    if following_list:
+        return len(following_list)
+    else:
+        return 0
+
+
+
