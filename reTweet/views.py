@@ -25,6 +25,33 @@ def _process_tweet(tweet_list):
     import operator
     return max(tweet_dict.iteritems(), key=operator.itemgetter(1))
 
+def _get_following_list(api, following=None, cursor=-1):
+
+    if following is None:
+        following = []
+    following_list = api.GetFriends(cursor=cursor)
+    
+    if following_list.get('users'):
+        following.extend(following_list.get('users'))
+        cursor = following_list.get('next_cursor') 
+        if  cursor != 0:
+            _get_following_list(api, following=following, cursor=cursor)
+        
+    return following
+
+def _get_followers_list(api, followers=None, cursor=-1):
+    if followers is None:
+        followers = []
+    followers_list = api.GetFollowers(cursor=cursor)
+    if followers_list.get('users'):
+        followers.extend(followers_list.get('users'))
+        cursor = followers_list.get('next_cursor') 
+        if  cursor != 0:
+            _get_followers_list(api, followers=followers, cursor=cursor)
+        
+    return followers
+
+
 def home_page(request):
 
     context = RequestContext(request)
@@ -66,21 +93,24 @@ def tweet_response(request):
             memcache.add("retweetsby", re_tweets, 10)
             logging.error("Memcache set failed.")
 
-        following_list = memcache.get("following")
-        if following_list is None:
-            following_list = api.GetFriends()
-            memcache.add("following", following_list, 10)
-
-        follower_list = memcache.get("followers")
-        if follower_list is None:
-            follower_list = api.GetFollowers()
-            memcache.add("followers", follower_list, 10)
-
     except:
         return render_to_response('home.html', context_instance=context)
 
+    following_list = memcache.get("following")
+    if following_list is None:
+        following_list = _get_following_list(api)
+        memcache.add("following", following_list, 10)
+        
+    follower_list = memcache.get("followers")
+    if follower_list is None:
+        follower_list = _get_followers_list(api)
+        memcache.add("followers", follower_list, 10)
+
+    context['screen_name'] = request.session['screen_name']
+    context['following'] = [str(following.screen_name) for following in following_list] 
+    context['follower'] = len(follower_list)
+
     if len(re_tweets) == 0:
-        context['error'] = 'You never retweets.'
         return render_to_response('index.html', context_instance=context)
 
     [tweet_list.append(re.text) for re in re_tweets]
@@ -90,12 +120,10 @@ def tweet_response(request):
     if page is not None:
         context['page'] = page
  
-    context['following'] = [str(following.screen_name) for following in following_list] 
-    context['follower'] = len(follower_list)
+
     context['top_tweeted'] = love_owner[0]
     context['top_tweeted_count'] = love_owner[1]
     context['re_tweets'] = pagination(request, re_tweets, 25)
-    context['screen_name'] = request.session['screen_name']
     
     return render_to_response('index.html', context_instance=context)
 
@@ -112,12 +140,12 @@ def retweeted_of_user(request, count=100):
 
         following_list = memcache.get("following")
         if following_list is None:
-            following_list = api.GetFriends()
+            following_list = _get_following_list(api)
             memcache.add("following", following_list, 10)
 
         follower_list = memcache.get("followers")
         if follower_list is None:
-            follower_list = api.GetFollowers()
+            follower_list = _get_followers_list(api)
             memcache.add("followers", follower_list, 10)
 
     except:
@@ -140,13 +168,14 @@ def get_friends(request):
         api = tweet._authenticate(request)
 
         following_list = memcache.get("following")
+        following_list = memcache.get("following")
         if following_list is None:
-            following_list = api.GetFriends()
+            following_list = _get_following_list(api)
             memcache.add("following", following_list, 10)
-        
+
         follower_list = memcache.get("followers")
         if follower_list is None:
-            follower_list = api.GetFollowers()
+            follower_list = _get_followers_list(api)
             memcache.add("followers", follower_list, 10)
     except:
         return render_to_response('home.html', context_instance=context)
@@ -165,12 +194,12 @@ def get_followers(request):
 
     following_list = memcache.get("following")
     if following_list is None:
-        following_list = api.GetFriends()
+        following_list = _get_following_list(api)
         memcache.add("following", following_list, 10)
         
     follower_list = memcache.get("followers")
     if follower_list is None:
-        follower_list = api.GetFollowers()
+        follower_list = _get_followers_list(api)
         memcache.add("followers", follower_list, 10)
     
     context['following'] = [str(following.screen_name) for following in following_list]
@@ -187,14 +216,14 @@ def get_non_followers(request):
 
     following_list = memcache.get("following")
     if following_list is None:
-        following_list = api.GetFriends()
+        following_list = _get_following_list(api)
         memcache.add("following", following_list, 10)
         
     follower_list = memcache.get("followers")
     if follower_list is None:
-        follower_list = api.GetFollowers()
+        follower_list = _get_followers_list(api)
         memcache.add("followers", follower_list, 10)
-    
+
     context['following'] = [str(following.screen_name) for following in following_list]
     context['follower'] = len(follower_list)
 

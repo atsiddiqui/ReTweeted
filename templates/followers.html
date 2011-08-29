@@ -1,0 +1,79 @@
+{% load tweet_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>I just come to know about my followers retweets at @retweetstats. </title>
+<meta name="Author" content="ReTweeted.IN | @retweetstats"> 
+<meta name="Description" content="Retweeted.in shows more than 200 tweets you retweeted, your 100 tweets get retweeted by whome, you can follow and unfollow users  and many more stats with detail description"> 
+<meta name="keywords" content="tweet, retweet, retweeted, top retweet, retweeted by me, my tweet retweeted, retweeted by others, retweetstats, tweetstats, stats"> 
+<link rel="stylesheet" type="text/css" href="/media/main.css"/>
+<link href="/media/images/favicon.ico" type="image/ico" rel="shortcut icon" /> 
+
+</head>
+
+<body>
+<div id="topnav">
+	<a style="text-decoration:none" href="{% url tweet-response %}"><span class="retweet-by-me">RT by You</span></a>
+	<a style="text-decoration:none" href="{% url retweeted-of-user %}"><span class="retweet-of-me">Your tweets RT</span></a>
+	<a style="text-decoration:none" href="{% url get-friends %}"><span class="selected">Friends & Followers</span></a>
+	<!--a style="text-decoration:none" href="#."><span class="retweet-by-user">RT by @users</span></a-->
+	<a style="text-decoration:none" href="{% url twitter-logout %}"><span class="signout">logout</span></a>
+</div>
+<div id="wrapper">
+  {% if screen_name or error %}
+ <div id="profile">
+  <img class="leftnav" src="https://api.twitter.com/1/users/profile_image/{{ screen_name }}/" style="width:48px;height=48px;" alt="{{ screen_name }}" title="{{ screen_name }}" />
+  
+   <div><span  class="user-name">{{ screen_name }}</span></div>
+  <div class="topfollows">followers:<span id="fcount">{{ follower }}</span></div>
+   <div class="topfollowings">followings:<span id="ffcount">{{ following|get_following_count }}</span></div>
+</div>
+ <div id="friends-nav">
+ <ul>
+	<li><a href="{% url get-friends %}">Friends</span></a></li>
+	<li>|</li>
+	<li><a href="{% url get-followers %}"><span class="select">Followers</span></a></li>
+	<li>|</li>
+	<li><a href="{% url get-non-followers %}">Not following back</a></li>
+ </ul>
+ </div>
+  {% endif %}
+<input type="hidden" id="hidden-val" value = "My follower's retweets.Thanks to @retweetstats http://retweeted.in" />
+  <div class=friends-details>
+    <h3><span class="textbox">Just a click and know your followers retweets.</span></h3>
+<a id="tweetthis" style="text-decoration:none;" href="#."><span class="tweetthis">Tweet</span></a><img id="loader-img" class="hide" src="/media/images/vsli1.gif" />
+</div>  
+  <div  class="content" id="friends-map"> 
+	{% for f in friends %}
+		<a id="@{{ f.AsDict.screen_name}}"  title="{{ f.AsDict.name }}" href="javascript:lightbox('{{ f.AsDict.screen_name }}','http://api.twitter.com/1/statuses/retweeted_by_user.json?callback=?&screen_name={{ f.AsDict.screen_name }}&count=100&include_entities=true');"><img class="photo" src="{{f.AsDict.profile_image_url}}" style="width:48px;height=48px;" /></a>
+	{% endfor %}
+  </div>
+	<div class="distance"></div>
+</div>
+
+
+<div class="footer">
+	
+</div>
+<input type="hidden" value="{{ following }}" id="following_list" />
+
+<script src="/media/jquery.min.js" type="text/javascript"></script>
+<script src="/media/friends.js" type="text/javascript"></script>
+<script src="/media/jquery.corner.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-24991395-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>

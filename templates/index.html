@@ -6,8 +6,8 @@
 {% if screen_name %}
 <title>I retweeted {{ top_tweeted }}'s tweet {{ top_tweeted_count }} times.</title>
 {% else %}
-<title>Retweets me|Who retweeted me|My Tweets Retweeted|retweeted.in </title>
-{% endif %}</br></div>
+<title>Retweets me | Who retweeted me | My Tweets Retweeted | retweeted.in </title>
+{% endif %}
 <meta name="Author" content="ReTweeted.IN | @retweetstats"> 
 <meta name="Description" content="Retweeted.in shows more than 200 tweets you retweeted, your 100 tweets get retweeted by whome, you can follow and unfollow users  and many more stats with detail description"> 
 <meta name="keywords" content="tweet, retweet, retweeted, top retweet, who retweeted me, retweeted by me, my tweets retweeted, your tweets retweetd, retweeted by others, retweetstats, tweetstats, stats">
@@ -19,7 +19,7 @@
 <body>
 <div id="topnav">
 	{% if screen_name or error %}
-	<a style="text-decoration:none" href="{% url tweet-response %}"><span class="retweet-by-me">RT by @{{ screen_name }}</span></a>
+	<a style="text-decoration:none" href="{% url tweet-response %}"><span class="selected">RT by You</span></a>
 	<a style="text-decoration:none" href="{% url retweeted-of-user %}"><span class="retweet-of-me">Your tweets RT</span></a>
 	<a style="text-decoration:none" href="{% url get-friends %}"><span class="get-friends">Friends & Followers</span></a>
 	<!--a style="text-decoration:none" href="#."><span class="retweet-by-user">RT by @users</span></a-->
@@ -27,28 +27,41 @@
 	{% endif %}
 </div>
 <div id="wrapper">
-   
   {% if screen_name or error %}
+ <div id="profile">
   <img class="leftnav" src="https://api.twitter.com/1/users/profile_image/{{ screen_name }}/" style="width:48px;height=48px;" alt="{{ screen_name }}" title="{{ screen_name }}" />
-  <span class="topfollows">followers:<span id="fcount">{{ follower }}</span></span>
-   <span class="topfollowings">followings:<span id="ffcount">{{ following|get_following_count }}</span></span>
-  <span id="tweet"><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.retweeted.in" data-count="horizontal" data-via="retweetstats">Tweet</a></span>
-  <span id="gplus"><g:plusone size="medium" href="http://www.retweeted.in"></g:plusone></span>
+ <div><span  class="user-name">{{ screen_name }}</span></div>
+  <div class="topfollows">followers:<span id="fcount">{{ follower }}</span></div>
+   <div class="topfollowings">followings:<span id="ffcount">{{ following|get_following_count }}</span></div>
+  <!--span id="tweet"><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.retweeted.in" data-count="horizontal" data-via="retweetstats">Tweet</a></span-->
+</div>
+ <div id="friends-nav">
+ <ul>
+	<li><a href="{% url get-friends %}">Friends</a></li>
+	<li>|</li>
+	<li><a href="{% url get-followers %}">Followers</a></li>
+ 	<li>|</li>
+	<li><a href="{% url get-non-followers %}">Not following back</a></li>
+ </ul>
+ </div>
   {% endif %}
+
   
   <h1 class="">{{ error }}</h1>
   {% if not screen_name %}
   <div id="button-holder"> 
 	<form method="POST" id="searchform"  action="#.">
-	<img class="logo" src="/media/images/logo.jpg" alt="Retweeted" title="ReTweeted" />
+	<img class="logo" src="/media/images/logo-red.jpg" alt="Retweeted" title="ReTweeted" />
         <input type="submit" class="signInButton"  value=""/> 
 	<img id="loader" class="hide" src="/media/images/ajax-loader.gif" alt="Retweeted" title="ReTweeted" />
   </form> </div>
    {% endif %}
    {% if screen_name %}
-   <div class=details>
-     <h2 class="account">Hey {{ screen_name }}, </h2> <span class="tweet-text"><h3><strong>You have retweeted <span id="target"><a href="http://twitter.com/{{ top_tweeted|clean_name }}" target="blank">{{ top_tweeted }}'s</a></span> tweet</strong> {{ top_tweeted_count }}<span> times.</span></h3><p style="clear:both;"></p></span>
-  </div>
+   <input type="hidden" id="hidden-val" value = "I retweeted {{ top_tweeted }}'s tweet {{ top_tweeted_count }} times via @retweetstats http://retweeted.in" />
+  <div class=friends-details>
+    <h3><span class="textbox">You retweeted {{ top_tweeted }}'s tweet {{ top_tweeted_count }} times.</span></h3>
+<a id="tweetthis" style="text-decoration:none;" href="#."><span class="tweetthis">Tweet</span></a><img id="loader-img" class="hide" src="/media/images/vsli1.gif" /><!--span><g:plusone size="medium" href="http://www.retweeted.in"></g:plusone></span-->
+</div>
   {% endif %}
   <div  class="content" id="tweets"> 
 	{% for tw in re_tweets.object_list %}

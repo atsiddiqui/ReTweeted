@@ -2926,7 +2926,11 @@ class Api(object):
     parameters['cursor'] = cursor
     json = self._FetchUrl(url, parameters=parameters)
     data = self._ParseAndCheckTwitter(json)
-    return [User.NewFromJsonDict(x) for x in data['users']]
+    if cursor:
+      data["users"] = [User.NewFromJsonDict(x) for x in data["users"]]
+      return data
+    else:
+      return [User.NewFromJsonDict(x) for x in data['users']]
 
   def GetFriendIDs(self, user=None, cursor=-1):
       '''Returns a list of twitter user id's for every person
@@ -2969,7 +2973,7 @@ class Api(object):
     data = self._ParseAndCheckTwitter(json)
     return data
 
-  def GetFollowers(self, page=None):
+  def GetFollowers(self, cursor=-1):
     '''Fetch the sequence of twitter.User instances, one for each follower
 
     The twitter.Api instance must be authenticated.
@@ -2986,11 +2990,15 @@ class Api(object):
       raise TwitterError("twitter.Api instance must be authenticated")
     url = '%s/statuses/followers.json' % self.base_url
     parameters = {}
-    if page:
-      parameters['page'] = page
+    if cursor:
+      parameters['cursor'] = cursor
     json = self._FetchUrl(url, parameters=parameters)
     data = self._ParseAndCheckTwitter(json)
-    return [User.NewFromJsonDict(x) for x in data]
+    if cursor:
+      data["users"] = [User.NewFromJsonDict(x) for x in data["users"]]
+      return data
+    else:
+      return [User.NewFromJsonDict(x) for x in data]
 
   def GetFeatured(self):
     '''Fetch the sequence of twitter.User instances featured on twitter.com

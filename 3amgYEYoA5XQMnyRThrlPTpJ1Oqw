@@ -1,0 +1,104 @@
+[1;31mType:		[0mtype
+[1;31mBase Class:	[0m<type 'type'>
+[1;31mString Form:[0m	<class 'twitter.Api'>
+[1;31mNamespace:	[0mInteractive
+[1;31mFile:		[0m/home/tauquir/ReTweeted/twitter.py
+[1;31mDocstring:
+[0m    A python interface into the Twitter API
+    
+    By default, the Api caches results for 1 minute.
+    
+    Example usage:
+    
+      To create an instance of the twitter.Api class, with no authentication:
+    
+        >>> import twitter
+        >>> api = twitter.Api()
+    
+      To fetch the most recently posted public twitter status messages:
+    
+        >>> statuses = api.GetPublicTimeline()
+        >>> print [s.user.name for s in statuses]
+        [u'DeWitt', u'Kesuke Miyagi', u'ev', u'Buzz Andersen', u'Biz Stone'] #...
+    
+      To fetch a single user's public status messages, where "user" is either
+      a Twitter "short name" or their user id.
+    
+        >>> statuses = api.GetUserTimeline(user)
+        >>> print [s.text for s in statuses]
+    
+      To use authentication, instantiate the twitter.Api class with a
+      consumer key and secret; and the oAuth key and secret:
+    
+        >>> api = twitter.Api(consumer_key='twitter consumer key',
+                              consumer_secret='twitter consumer secret',
+                              access_token_key='the_key_given',
+                              access_token_secret='the_key_secret')
+    
+      To fetch your friends (after being authenticated):
+    
+        >>> users = api.GetFriends()
+        >>> print [u.name for u in users]
+    
+      To post a twitter status message (after being authenticated):
+    
+        >>> status = api.PostUpdate('I love python-twitter!')
+        >>> print status.text
+        I love python-twitter!
+    
+      There are many other methods, including:
+    
+        >>> api.PostUpdates(status)
+        >>> api.PostDirectMessage(user, text)
+        >>> api.GetUser(user)
+        >>> api.GetReplies()
+        >>> api.GetUserTimeline(user)
+        >>> api.GetStatus(id)
+        >>> api.DestroyStatus(id)
+        >>> api.GetFriendsTimeline(user)
+        >>> api.GetFriends(user)
+        >>> api.GetFollowers()
+        >>> api.GetFeatured()
+        >>> api.GetDirectMessages()
+        >>> api.PostDirectMessage(user, text)
+        >>> api.DestroyDirectMessage(id)
+        >>> api.DestroyFriendship(user)
+        >>> api.CreateFriendship(user)
+        >>> api.GetUserByEmail(email)
+        >>> api.VerifyCredentials()
+[1;31m
+Constructor information:[0m
+[1;31mDefinition:	[0m[1;37mtwitter[0m[1;33m.[0m[1;37mApi[0m[1;33m([0m[1;37mself[0m[1;33m,[0m [1;37mconsumer_key[0m[1;33m=[0m[1;37mNone[0m[1;33m,[0m [1;37mconsumer_secret[0m[1;33m=[0m[1;37mNone[0m[1;33m,[0m [1;37maccess_token_key[0m[1;33m=[0m[1;37mNone[0m[1;33m,[0m [1;37maccess_token_secret[0m[1;33m=[0m[1;37mNone[0m[1;33m,[0m [1;37minput_encoding[0m[1;33m=[0m[1;37mNone[0m[1;33m,[0m [1;37mrequest_headers[0m[1;33m=[0m[1;37mNone[0m[1;33m,[0m [1;37mcache[0m[1;33m=[0m[1;37mNone[0m[1;33m,[0m [1;37mshortner[0m[1;33m=[0m[1;37mNone[0m[1;33m,[0m [1;37mbase_url[0m[1;33m=[0m[1;37mNone[0m[1;33m,[0m [1;37muse_gzip_compression[0m[1;33m=[0m[1;37mFalse[0m[1;33m,[0m [1;37mdebugHTTP[0m[1;33m=[0m[1;37mFalse[0m[1;33m)[0m[1;33m[0m[0m
+[1;31mDocstring:
+[0m    Instantiate a new twitter.Api object.
+    
+    Args:
+      consumer_key:
+        Your Twitter user's consumer_key.
+      consumer_secret:
+        Your Twitter user's consumer_secret.
+      access_token_key:
+        The oAuth access token key value you retrieved
+        from running get_access_token.py.
+      access_token_secret:
+        The oAuth access token's secret, also retrieved
+        from the get_access_token.py run.
+      input_encoding:
+        The encoding used to encode input strings. [Optional]
+      request_header:
+        A dictionary of additional HTTP request headers. [Optional]
+      cache:
+        The cache instance to use. Defaults to DEFAULT_CACHE.
+        Use None to disable caching. [Optional]
+      shortner:
+        The shortner instance to use.  Defaults to None.
+        See shorten_url.py for an example shortner. [Optional]
+      base_url:
+        The base URL to use to contact the Twitter API.
+        Defaults to https://twitter.com. [Optional]
+      use_gzip_compression:
+        Set to True to tell enable gzip compression for any call
+        made to Twitter.  Defaults to False. [Optional]
+      debugHTTP:
+        Set to True to enable debug output from urllib2 when performing
+        any HTTP requests.  Defaults to False. [Optional]
